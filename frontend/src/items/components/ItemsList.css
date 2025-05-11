@@ -1,0 +1,19 @@
+.item-card {
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.item-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.item-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+}

@@ -1,0 +1,96 @@
+### Kirjaudu admin-käyttäjänä
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "admin@adminmail.admin",
+  "password": "admin"  
+}
+
+
+### Test 1: Käyttäjän rekisteröinti (Signup)
+POST http://localhost:5000/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Test 2: Duplikaatti email – pitäisi epäonnistua
+POST http://localhost:5000/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "Duplicate",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Test 3: Kirjautuminen – oikeilla tiedoilla
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Test 4: Kirjautuminen – väärällä salasanalla
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrongpassword"
+}
+
+### Test 5: Hae kaikki items (public)
+GET http://localhost:5000/api/items
+
+### Test 6: Luo uusi item ilman tokenia (unauthorized)
+POST http://localhost:5000/api/items
+Content-Type: application/json
+
+{
+  "name": "Unauthorized item",
+  "price": 9.99
+}
+
+### Test 7: Luo uusi item (authorized)
+POST http://localhost:5000/api/items
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMWFjNTdkLThlODQtNDFiZC1iNDVlLTI1NDkxNTZiNDA2OSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImFkbWluIjpmYWxzZSwibmFtZSI6IlRlc3QgVXNlciIsImlhdCI6MTc0Njg3OTkxMSwiZXhwIjoxNzQ2ODgzNTExfQ.GkvMhJGLtqnqvHq0OvWFBPNuocBODuU2A0Ac2VXZK3o
+
+{
+  "name": "Terveyskirja",
+  "price": 9.99,
+  "category": "Other",
+  "description": "Test description",
+  "image": "uploads/terveyskirja.png"
+}
+
+### Test 8: Päivitä item tavallisella käyttäjällä (FAIL, jos admin-oikeudet vaaditaan)
+PUT http://localhost:5000/api/items/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMWFjNTdkLThlODQtNDFiZC1iNDVlLTI1NDkxNTZiNDA2OSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImFkbWluIjpmYWxzZSwibmFtZSI6IlRlc3QgVXNlciIsImlhdCI6MTc0Njg3OTkxMSwiZXhwIjoxNzQ2ODgzNTExfQ.GkvMhJGLtqnqvHq0OvWFBPNuocBODuU2A0Ac2VXZK3o
+
+{
+  "name": "Updated by user",
+  "price": 10.99
+}
+
+### Test 9: Päivitä item admin-tokenilla
+PUT http://localhost:5000/api/items/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOi...admin-token
+
+{
+  "name": "Updated by admin",
+  "price": 10.99
+}
+
+### Test 10: Poista item
+DELETE http://localhost:5000/api/items/1
+Authorization: Bearer eyJhbGciOi...admin-token
